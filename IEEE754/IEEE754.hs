@@ -7,7 +7,7 @@ floatToDecimal :: String -> Float
 floatToDecimal str = let bits = toBits str
                          f = factor bits
                          e = IEEE754.exponent bits
-                         m = mantisse bits
+                         m = mantissa bits
                          (intP, fracP) = splitParts e m
                      in f * ((toF . bitsToInt $ intP) + (bitsToFrac $ fracP)) 
 
@@ -44,7 +44,7 @@ fillBits e bits
 cBIAS = 127
 -- Bits for algebraic sign
 cSIGN_BIT = 1
--- Bit lengths for exponent and mantisse
+-- Bit lengths for exponent and mantissa
 cEXP_BITS = 8
 cMAN_BITS = 23
 
@@ -56,8 +56,8 @@ factor _ = (-1.0)
 exponent :: Bits -> Int
 exponent bits = (bitsToInt . take cEXP_BITS . drop cSIGN_BIT $ bits) - cBIAS
 
-mantisse :: Bits -> Bits
-mantisse bits = (1 :) . take cMAN_BITS . drop (cSIGN_BIT + cEXP_BITS) $ bits
+mantissa :: Bits -> Bits
+mantissa bits = (1 :) . take cMAN_BITS . drop (cSIGN_BIT + cEXP_BITS) $ bits
 
 
 -- ##################################################################
